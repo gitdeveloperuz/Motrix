@@ -2,8 +2,8 @@ import { Alert, AlertDescription, AlertTitle } from '@renderer/components/ui/ale
 import { useTaskPeers } from '@renderer/hooks/use-task-peers'
 import type { DownloadTask } from '@shared/types/task'
 import { TaskStatus } from '@shared/types/task'
-import { useEffect, useState } from 'react'
 import { diagnoseTorrentStall } from '@shared/lib/torrent-stall-diagnosis'
+import { useEffect, useState } from 'react'
 
 const ACTIVE_STATUSES = new Set<TaskStatus>([
   TaskStatus.FetchingMetadata,
@@ -26,10 +26,7 @@ export function TorrentDiagnosticsCard({ task }: { task: DownloadTask }) {
   }, [task.id])
 
   useEffect(() => {
-    if (observedSpeed > 0) {
-      setZeroSince(Date.now())
-      return
-    }
+    if (observedSpeed > 0) return
     const interval = window.setInterval(() => setNow(Date.now()), 2_000)
     return () => window.clearInterval(interval)
   }, [observedSpeed])
@@ -74,7 +71,7 @@ export function TorrentDiagnosticsCard({ task }: { task: DownloadTask }) {
     'engine-error': task.errorMessage || 'The download engine reported an error.',
     'metadata-not-found': 'A magnet link must retrieve metadata before its files can start downloading.',
     'waiting-for-sources': 'There are currently no useful peers connected to provide the requested pieces.',
-    'peers-not-sending': `${diagnosis.explanation} This can happen when connected peers do not have the pieces you need or are not uploading.`,
+    'peers-not-sending': `${diagnosis.explanation} This can happen when connected peers do not have the pieces you need or are not uploading. The zero-speed period is measured from when this panel started monitoring.`,
     'tracker-connectivity': diagnosis.explanation,
     'slow-swarm': diagnosis.explanation,
     'no-stall': 'The client is discovering peers. Torrent connections and speeds can take time to appear.',
