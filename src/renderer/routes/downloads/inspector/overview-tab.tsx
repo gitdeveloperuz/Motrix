@@ -33,6 +33,7 @@ import { StatusPill } from '../status-pill'
 import { getTaskEta, getTaskSpeed } from '../task-column-values'
 import { TaskTimestamp } from '../task-timestamp'
 import { SeedingDuration } from './seeding-duration'
+import { TorrentDiagnosticsCard } from './torrent-diagnostics-card'
 import { useTaskActions } from './use-task-actions'
 
 function Card({
@@ -174,6 +175,7 @@ export function OverviewTab({
   const isBt = task.type === TaskType.Bt || task.type === TaskType.Magnet
   return (
     <div className="flex flex-col gap-3">
+      {isBt && <TorrentDiagnosticsCard task={task} />}
       {task.status === TaskStatus.Error && (
         <ErrorPanel key={task.id} task={task} />
       )}
