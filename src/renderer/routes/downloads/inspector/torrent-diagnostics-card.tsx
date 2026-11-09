@@ -3,7 +3,7 @@ import { useTaskPeers } from '@renderer/hooks/use-task-peers'
 import type { DownloadTask } from '@shared/types/task'
 import { TaskStatus } from '@shared/types/task'
 import { useEffect, useState } from 'react'
-import { diagnoseTorrentStall } from '@core/torrent/torrent-stall-diagnosis'
+import { diagnoseTorrentStall } from '@shared/lib/torrent-stall-diagnosis'
 
 const ACTIVE_STATUSES = new Set<TaskStatus>([
   TaskStatus.FetchingMetadata,
@@ -59,9 +59,6 @@ export function TorrentDiagnosticsCard({ task }: { task: DownloadTask }) {
     silenceMs: observedSpeed > 0 ? 0 : Math.max(0, now - zeroSince),
   })
 
-  const titleKey = `panel.downloads.torrentDiagnosis.${diagnosis.code}.title`
-  const explanationKey = `panel.downloads.torrentDiagnosis.${diagnosis.code}.explanation`
-  const actionKey = `panel.downloads.torrentDiagnosis.${diagnosis.code}.action`
   const title = {
     paused: 'Download is paused',
     'engine-error': 'Torrent engine reported an error',
