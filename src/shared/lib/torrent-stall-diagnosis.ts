@@ -145,7 +145,7 @@ export function diagnoseTorrentStall(
     }
   }
 
-  if (peers === 0 && (knownPeers === 0 || seeders === 0)) {
+  if (peers === 0 && knownPeers === 0 && seeders === 0) {
     return {
       code: 'waiting-for-sources',
       title: 'No useful peers are available',
